@@ -40,7 +40,7 @@ const loader = new THREE.TextureLoader();
 
 // OBJECTS
 // plane with gradient color background
-const bgPlaneMesh = drawPlane();
+const bgPlaneMesh = drawPlane(camera);
 scene.add(bgPlaneMesh);
 
 // statue image
@@ -49,7 +49,7 @@ scene.add(statue);
 
 // chess image
 const chess = drawChess();
-scene.add(chess);
+// scene.add(chess);
 
 // text stuff
 

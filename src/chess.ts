@@ -28,7 +28,7 @@ export function drawChess() {
   plane11.position.z = 80;
   plane11.position.y = -25;
 
-  plane11.rotateX(-((85 * Math.PI) / 180));
+  plane11.rotateX(-((88 * Math.PI) / 180));
 
   //
   //

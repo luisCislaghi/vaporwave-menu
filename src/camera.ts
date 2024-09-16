@@ -15,7 +15,7 @@ function getCamera(renderer: THREE.WebGLRenderer) {
   // );
 
   const camera = new THREE.PerspectiveCamera(80, width / height, 0.1, 1000);
-  camera.position.y = 5;
+  camera.position.y = 0;
   camera.position.z = 100;
   // const camera = new THREE.PerspectiveCamera(
   //   40,

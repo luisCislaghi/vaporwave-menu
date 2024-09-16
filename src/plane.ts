@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export function drawPlane() {
+export function drawPlane(camera: THREE.PerspectiveCamera) {
   const vertexShader = `
   varying vec2 vUv;
   void main() {
@@ -30,9 +30,14 @@ export function drawPlane() {
     },
   });
   bgPlaneMaterial.side = THREE.DoubleSide;
-  // const bgPlaneGeo = new THREE.PlaneGeometry(4.62, 10);
-  const bgPlaneGeo = new THREE.PlaneGeometry(100, 100);
+
+  let vect2 = new THREE.Vector2(0, 0);
+  camera.getViewSize(100, vect2);
+  const width = vect2.x;
+  const height = vect2.y;
+
+  const bgPlaneGeo = new THREE.PlaneGeometry(width, height);
   const bgPlaneMesh = new THREE.Mesh(bgPlaneGeo, bgPlaneMaterial);
-  bgPlaneMesh.position.y = 32;
+  // bgPlaneMesh.position.y = 32;
   return bgPlaneMesh;
 }
