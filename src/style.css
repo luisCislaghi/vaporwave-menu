@@ -2,9 +2,12 @@
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
+  font-size: 16px;
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
+  /* color: rgba(255, 255, 255, 0.87); */
+  color: #242424;
   background-color: #242424;
 
   font-synthesis: none;
@@ -19,4 +22,39 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+}
+
+#c {
+  display: block;
+  height: 100vh;
+  width: 100vw;
+}
+
+.menu {
+  position: absolute;
+  right: 0;
+  top: 10vh;
+  height: 80vh;
+  overflow-y: scroll;
+}
+.title {
+  font-size: 6.5rem;
+  font-weight: 700;
+  text-align: right;
+  margin: 0;
+}
+ul {
+  font-size: 4.5rem;
+  text-align: right;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  /* text-shadow: 0 0 5px #ffa500, 0 0 15px #ffa500, 0 0 20px #ffa500,
+    0 0 40px #ffa500, 0 0 60px #ff0000, 0 0 10px #ff8d00, 0 0 98px #ff0000;
+  color: #fff6a9; */
+}
+
+li {
+  margin: 0;
+  padding: 0;
 }

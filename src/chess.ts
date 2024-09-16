@@ -3,7 +3,7 @@ import * as THREE from "three";
 export function drawChess() {
   // public\images\head_of_helios.png
 
-  const planeSize = 140;
+  const planeSize = 140 * 2;
 
   const texture = new THREE.TextureLoader().load("images/chess.jpg");
   // const texture = loader.load("./images/checker.png");
@@ -13,7 +13,7 @@ export function drawChess() {
   texture.magFilter = THREE.NearestFilter;
   texture.colorSpace = THREE.SRGBColorSpace;
   const planeTexture = texture.clone();
-  const repeats = planeSize / 20;
+  const repeats = planeSize / 30;
   planeTexture.repeat.set(repeats, repeats);
   // and this is example code to get it to be on a plane
   const geometry11 = new THREE.PlaneGeometry(planeSize, planeSize, 16, 16);
@@ -21,12 +21,14 @@ export function drawChess() {
     map: planeTexture,
     side: THREE.DoubleSide,
   });
+  material11.side = THREE.DoubleSide;
+
   const plane11 = new THREE.Mesh(geometry11, material11);
 
-  plane11.position.z = 25;
+  plane11.position.z = 80;
   plane11.position.y = -25;
 
-  plane11.rotateX(-((60 * Math.PI) / 180));
+  plane11.rotateX(-((85 * Math.PI) / 180));
 
   //
   //

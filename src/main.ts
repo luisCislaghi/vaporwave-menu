@@ -7,8 +7,17 @@ import { drawPlane } from "./plane";
 import { drawStatue } from "./statue";
 import { drawChess } from "./chess";
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
+const canvas = document.querySelector("#c") || undefined;
+const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
+// CAMERA
+const camera = getCamera(renderer);
+
+if (resizeRendererToDisplaySize(renderer)) {
+  const canvas = renderer.domElement;
+  camera.aspect = canvas.clientWidth / canvas.clientHeight;
+  camera.updateProjectionMatrix();
+}
+
 renderer.setAnimationLoop(animate);
 // renderer.shadowMap.enabled = true;
 // renderer.toneMapping = THREE.ACESFilmicToneMapping; // teste
@@ -23,9 +32,6 @@ const scene = new THREE.Scene();
 scene.add(light1);
 scene.add(light2);
 scene.add(ambientLight);
-
-// CAMERA
-const camera = getCamera(renderer);
 
 // TEXTURE
 const loader = new THREE.TextureLoader();
@@ -45,7 +51,20 @@ scene.add(statue);
 const chess = drawChess();
 scene.add(chess);
 
+// text stuff
+
 function animate() {
   stats.update();
   renderer.render(scene, camera);
+}
+
+function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer) {
+  const canvas = renderer.domElement;
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  const needResize = canvas.width !== width || canvas.height !== height;
+  if (needResize) {
+    renderer.setSize(width, height, false);
+  }
+  return needResize;
 }

@@ -29,9 +29,10 @@ export function drawPlane() {
       color2: { value: new THREE.Color("hsl(196, 100%, 84%)") }, // blue
     },
   });
-
+  bgPlaneMaterial.side = THREE.DoubleSide;
   // const bgPlaneGeo = new THREE.PlaneGeometry(4.62, 10);
-  const bgPlaneGeo = new THREE.PlaneGeometry(46.2, 100);
+  const bgPlaneGeo = new THREE.PlaneGeometry(100, 100);
   const bgPlaneMesh = new THREE.Mesh(bgPlaneGeo, bgPlaneMaterial);
+  bgPlaneMesh.position.y = 32;
   return bgPlaneMesh;
 }
