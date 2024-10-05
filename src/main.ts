@@ -6,6 +6,7 @@ import Stats from "three/addons/libs/stats.module.js";
 import { drawPlane } from "./plane";
 import { drawStatue } from "./statue";
 import { drawChess } from "./chess";
+import { doTextStuff } from "./text";
 
 const canvas = document.querySelector("#c") || undefined;
 const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
@@ -41,7 +42,7 @@ const loader = new THREE.TextureLoader();
 // OBJECTS
 // plane with gradient color background
 const bgPlaneMesh = drawPlane(camera);
-scene.add(bgPlaneMesh);
+// scene.add(bgPlaneMesh);
 
 // statue image
 const statue = drawStatue();
@@ -52,6 +53,7 @@ const chess = drawChess();
 // scene.add(chess);
 
 // text stuff
+doTextStuff(scene, renderer, camera);
 
 function animate() {
   stats.update();
