@@ -82,6 +82,7 @@ export async function doTextStuff(
     // mesh.position.z = 10;
 
     mesh.position.y = 10 - index * 2;
+    mesh.position.z = 90;
     mesh.rotateX(Math.PI);
     const scale = 0.02;
     mesh.scale.set(scale, scale, scale);
