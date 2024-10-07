@@ -7,8 +7,8 @@ import {
 } from "three-msdf-text-utils";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import VirtualScroll from "virtual-scroll";
-import textVertexShader from "./shaders/textVertex.glsl";
-import textFragmentShader from "./shaders/textFragment.glsl";
+import textVertexShader from "./shaders/textVertex.glsl.js";
+import textFragmentShader from "./shaders/textFragment.glsl.js";
 
 const items = [
   "Americano",

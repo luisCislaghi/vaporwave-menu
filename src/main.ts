@@ -7,9 +7,10 @@ import { drawPlane } from "./plane";
 import { drawStatue } from "./statue";
 import { drawChess } from "./chess";
 import { doTextStuff } from "./text";
+import { badTvEffect } from "./badTv";
 
 const canvas = document.querySelector("#c") || undefined;
-const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
+const renderer = new THREE.WebGLRenderer({ antialias: false, canvas });
 // CAMERA
 const camera = getCamera(renderer);
 
@@ -29,6 +30,14 @@ document.body.appendChild(stats.dom);
 
 const scene = new THREE.Scene();
 
+let shaderTime = 0.0;
+
+const { badTVPass, filmPass, staticPass } = badTvEffect(
+  scene,
+  camera,
+  shaderTime
+);
+
 // LIGHTS
 scene.add(light1);
 scene.add(light2);
@@ -42,7 +51,7 @@ const loader = new THREE.TextureLoader();
 // OBJECTS
 // plane with gradient color background
 const bgPlaneMesh = drawPlane(camera);
-// scene.add(bgPlaneMesh);
+scene.add(bgPlaneMesh);
 
 // statue image
 const statue = drawStatue();
@@ -53,9 +62,20 @@ const chess = drawChess();
 // scene.add(chess);
 
 // text stuff
-doTextStuff(scene, renderer, camera);
-
+// doTextStuff(scene, renderer, camera);
+let frame = 0;
 function animate() {
+  shaderTime += 0.1;
+  badTVPass.uniforms["time"].value = shaderTime;
+  filmPass.uniforms["time"].value = shaderTime;
+  staticPass.uniforms["time"].value = shaderTime;
+
+  frame++;
+  if (frame % 50 === 0) {
+    frame = 0;
+    const random = Math.random() * 2;
+    statue.material.uniforms.glitchIntensity.value = 1 + random;
+  }
   stats.update();
   renderer.render(scene, camera);
 }
