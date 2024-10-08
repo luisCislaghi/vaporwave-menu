@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import badTVShader from "./shaders/tv/badTVShader.js";
-import staticShader from "./shaders/tv/staticShader.js";
+import badTVShader from "./shaders/tv/badTVShader";
+import staticShader from "./shaders/tv/staticShader";
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
@@ -20,7 +20,7 @@ export function badTvEffect(
   // console.log(badTVShader);
   // console.log(staticShader);
 
-  let composer;
+  let composer = new EffectComposer(renderer);
 
   //Create Shader Passes
   const renderPass = new RenderPass(scene, camera);
@@ -61,31 +61,28 @@ export function badTvEffect(
     nIntensity: 0.1,
   };
 
-  function onToggleShaders() {
-    //Add Shader Passes to Composer
-    //order is important
-    composer = new EffectComposer(renderer);
-    composer.addPass(renderPass);
+  //Add Shader Passes to Composer
+  //order is important
+  composer.addPass(renderPass);
 
-    if (filmParams.show) {
-      composer.addPass(filmPass);
-    }
-
-    if (badTVParams.show) {
-      composer.addPass(badTVPass);
-    }
-
-    if (rgbParams.show) {
-      composer.addPass(rgbPass);
-    }
-
-    if (staticParams.show) {
-      composer.addPass(staticPass);
-    }
-
-    composer.addPass(copyPass);
-    copyPass.renderToScreen = true;
+  if (filmParams.show) {
+    composer.addPass(filmPass);
   }
+
+  if (badTVParams.show) {
+    composer.addPass(badTVPass);
+  }
+
+  if (rgbParams.show) {
+    composer.addPass(rgbPass);
+  }
+
+  if (staticParams.show) {
+    composer.addPass(staticPass);
+  }
+
+  composer.addPass(copyPass);
+  copyPass.renderToScreen = true;
 
   function onParamsChange() {
     //copy gui params into shader uniforms
@@ -105,7 +102,6 @@ export function badTvEffect(
     filmPass.uniforms["nIntensity"] = { value: filmParams.nIntensity };
   }
 
-  onToggleShaders();
   onParamsChange();
   // console.log(composer);
 

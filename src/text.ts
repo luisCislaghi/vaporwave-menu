@@ -2,13 +2,13 @@ import * as THREE from "three";
 // @ts-ignore
 import {
   MSDFTextGeometry,
-  MSDFTextMaterial,
+  // MSDFTextMaterial,
   uniforms,
 } from "three-msdf-text-utils";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import VirtualScroll from "virtual-scroll";
-import textVertexShader from "./shaders/textVertex.glsl.js";
-import textFragmentShader from "./shaders/textFragment.glsl.js";
+import textVertexShader from "./shaders/textVertex.glsl";
+import textFragmentShader from "./shaders/textFragment.glsl";
 
 const items = [
   "Americano",
@@ -21,9 +21,9 @@ const items = [
 ];
 
 export async function doTextStuff(
-  scene: THREE.Scene,
-  renderer: THREE.WebGLRenderer,
-  camera: THREE.PerspectiveCamera
+  scene: THREE.Scene
+  // renderer: THREE.WebGLRenderer,
+  // camera: THREE.PerspectiveCamera
 ) {
   const group = new THREE.Group();
 

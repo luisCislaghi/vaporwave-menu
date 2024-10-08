@@ -1,6 +1,6 @@
 import * as THREE from "three";
-import glitchVert from "./shaders/glitchVert.glsl.js";
-import glitchFrag from "./shaders/glitchFrag.glsl.js";
+import glitchVert from "./shaders/glitchVert.glsl";
+import glitchFrag from "./shaders/glitchFrag.glsl";
 
 export function drawStatue() {
   // public\images\head_of_helios.png

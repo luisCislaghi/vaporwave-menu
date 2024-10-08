@@ -1,17 +1,13 @@
 import * as THREE from "three";
 import { ambientLight, light1, light2 } from "./light";
 import { getCamera } from "./camera";
-import styles from "./styles.css";
-import Stats from "three/addons/libs/stats.module.js";
 import { drawPlane } from "./plane";
 import { drawStatue } from "./statue";
 import { drawChess } from "./chess";
 import { doTextStuff } from "./text";
 import { badTvEffect } from "./badTv";
-import badTVShader from "./shaders/tv/badTVShader.js";
+import Stats from "three/addons/libs/stats.module.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 
 const canvas = document.querySelector("#c") || undefined;
 const renderer = new THREE.WebGLRenderer({ antialias: false, canvas });
@@ -25,7 +21,6 @@ if (resizeRendererToDisplaySize(renderer)) {
   camera.updateProjectionMatrix();
 }
 
-renderer.setAnimationLoop(animate);
 // renderer.shadowMap.enabled = true;
 // renderer.toneMapping = THREE.ACESFilmicToneMapping; // teste
 // renderer.toneMappingExposure = 1.25; // teste
@@ -70,31 +65,58 @@ const statue = drawStatue();
 scene.add(statue);
 
 // chess image
-// const chess = drawChess();
-// scene.add(chess);
+const chess = drawChess();
+scene.add(chess);
 
 // text stuff
-// doTextStuff(scene, renderer, camera);
-let frame = 0;
+doTextStuff(scene);
+
+// initialize the timer variables
+let [fpsInterval, startTime, now, then, elapsed]: number[] = [];
+
 function animate() {
-  const deltaTime = 0.3;
+  const deltaTime = 0.1;
   shaderTime += deltaTime;
 
   badTVPass.uniforms["time"].value = shaderTime;
   filmPass.uniforms["time"].value = shaderTime;
   staticPass.uniforms["time"].value = shaderTime;
-  console.log(staticPass);
-  composer.render(deltaTime);
 
-  frame++;
-  if (frame % 300 === 0) {
-    frame = 0;
+  if (shaderTime > 22 && shaderTime < 24) {
+    shaderTime = 0;
     const random = Math.random() * 2;
     statue.material.uniforms.glitchIntensity.value = 1 + random;
   }
+  if (statue.material.uniforms.glitchIntensity.value > 0 && shaderTime > 5) {
+    statue.material.uniforms.glitchIntensity.value = 0;
+  }
   stats.update();
-  // renderer.render(scene, camera);
+
+  requestAnimationFrame(animate);
+
+  // calc elapsed time since last loop
+  now = Date.now();
+  elapsed = now - then;
+
+  // if enough time has elapsed, draw the next frame
+  if (elapsed > fpsInterval) {
+    // Get ready for next frame by setting then=now, but also adjust for your
+    // specified fpsInterval not being a multiple of RAF's interval (16.7ms)
+    then = now - (elapsed % fpsInterval);
+
+    // Put your drawing code here
+    composer.render(deltaTime);
+  }
 }
+
+function startAnimating(fps: number) {
+  fpsInterval = 1000 / fps;
+  then = Date.now();
+  startTime = then;
+  animate();
+}
+
+startAnimating(24);
 
 function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer) {
   const canvas = renderer.domElement;

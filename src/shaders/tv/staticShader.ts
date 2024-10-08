@@ -3,8 +3,10 @@
  *
  * Static effect. Additively blended digital noise.
  *
- * amount - amount of noise to add (0 - 1)
- * size - size of noise grains (pixels)
+ * Uniforms:
+ * time: steadily increasing float passed in
+ * size: size of noise grains (pixels)
+ * amount: amount of noise to add (0 - 1)
  *
  * The MIT License
  *
