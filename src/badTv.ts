@@ -15,13 +15,12 @@ import { RGBShiftShader } from "three/addons/shaders/RGBShiftShader.js";
 export function badTvEffect(
   scene: THREE.Scene,
   camera: THREE.PerspectiveCamera,
-  shaderTime: number
+  renderer: THREE.WebGLRenderer
 ) {
+  // console.log(badTVShader);
+  // console.log(staticShader);
+
   let composer;
-  let badTVParams;
-  let staticParams;
-  let rgbParams;
-  let filmParams;
 
   //Create Shader Passes
   const renderPass = new RenderPass(scene, camera);
@@ -35,33 +34,80 @@ export function badTvEffect(
   filmPass.uniforms.grayscale.value = 0;
 
   //Init DAT GUI control panel
-  badTVParams = {
-    mute: true,
+  let badTVParams = {
     show: true,
-    distortion: 3.0,
-    distortion2: 1.0,
-    speed: 0.3,
-    rollSpeed: 0.1,
+    distortion: 0.8,
+    distortion2: 1.5,
+    speed: 0.07,
+    rollSpeed: 0.0,
   };
 
-  staticParams = {
+  let staticParams = {
     show: true,
-    amount: 0.5,
-    size: 4.0,
+    amount: 0.05,
+    size: 2.0,
   };
 
-  rgbParams = {
-    show: true,
+  let rgbParams = {
+    show: false,
     amount: 0.005,
     angle: 0.0,
   };
 
-  filmParams = {
-    show: true,
+  let filmParams = {
+    show: false,
     count: 800,
-    sIntensity: 0.9,
-    nIntensity: 0.4,
+    sIntensity: 0.1,
+    nIntensity: 0.1,
   };
 
-  return { badTVPass, filmPass, staticPass };
+  function onToggleShaders() {
+    //Add Shader Passes to Composer
+    //order is important
+    composer = new EffectComposer(renderer);
+    composer.addPass(renderPass);
+
+    if (filmParams.show) {
+      composer.addPass(filmPass);
+    }
+
+    if (badTVParams.show) {
+      composer.addPass(badTVPass);
+    }
+
+    if (rgbParams.show) {
+      composer.addPass(rgbPass);
+    }
+
+    if (staticParams.show) {
+      composer.addPass(staticPass);
+    }
+
+    composer.addPass(copyPass);
+    copyPass.renderToScreen = true;
+  }
+
+  function onParamsChange() {
+    //copy gui params into shader uniforms
+    badTVPass.uniforms["distortion"] = { value: badTVParams.distortion };
+    badTVPass.uniforms["distortion2"] = { value: badTVParams.distortion2 };
+    badTVPass.uniforms["speed"] = { value: badTVParams.speed };
+    badTVPass.uniforms["rollSpeed"] = { value: badTVParams.rollSpeed };
+
+    staticPass.uniforms["amount"] = { value: staticParams.amount };
+    staticPass.uniforms["size"] = { value: staticParams.size };
+
+    rgbPass.uniforms["angle"] = { value: rgbParams.angle * Math.PI };
+    rgbPass.uniforms["amount"] = { value: rgbParams.amount };
+
+    filmPass.uniforms["sCount"] = { value: filmParams.count };
+    filmPass.uniforms["sIntensity"] = { value: filmParams.sIntensity };
+    filmPass.uniforms["nIntensity"] = { value: filmParams.nIntensity };
+  }
+
+  onToggleShaders();
+  onParamsChange();
+  // console.log(composer);
+
+  return { badTVPass, filmPass, staticPass, composer };
 }
