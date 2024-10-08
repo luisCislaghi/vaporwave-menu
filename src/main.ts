@@ -32,13 +32,6 @@ const scene = new THREE.Scene();
 
 let shaderTime = 0.0;
 
-// let composer = new EffectComposer(renderer);
-// let renderPass = new RenderPass(scene, camera);
-// let badTVPass = new ShaderPass(badTVShader);
-// composer.addPass(renderPass);
-// composer.addPass(badTVPass);
-// badTVPass.renderToScreen = true;
-
 const { badTVPass, filmPass, staticPass, composer } = badTvEffect(
   scene,
   camera,
@@ -72,28 +65,9 @@ scene.add(chess);
 doTextStuff(scene);
 
 // initialize the timer variables
-let [fpsInterval, startTime, now, then, elapsed]: number[] = [];
+let [fpsInterval, now, then, elapsed]: number[] = [];
 
 function animate() {
-  const deltaTime = 0.1;
-  shaderTime += deltaTime;
-
-  badTVPass.uniforms["time"].value = shaderTime;
-  filmPass.uniforms["time"].value = shaderTime;
-  staticPass.uniforms["time"].value = shaderTime;
-
-  if (shaderTime > 22 && shaderTime < 24) {
-    shaderTime = 0;
-    const random = Math.random() * 2;
-    statue.material.uniforms.glitchIntensity.value = 1 + random;
-  }
-  if (statue.material.uniforms.glitchIntensity.value > 0 && shaderTime > 5) {
-    statue.material.uniforms.glitchIntensity.value = 0;
-  }
-  stats.update();
-
-  requestAnimationFrame(animate);
-
   // calc elapsed time since last loop
   now = Date.now();
   elapsed = now - then;
@@ -105,14 +79,32 @@ function animate() {
     then = now - (elapsed % fpsInterval);
 
     // Put your drawing code here
+    const deltaTime = 0.1;
+    shaderTime += deltaTime;
+
+    badTVPass.uniforms["time"].value = shaderTime;
+    filmPass.uniforms["time"].value = shaderTime;
+    staticPass.uniforms["time"].value = shaderTime;
+
+    if (shaderTime > 2 && shaderTime < 3) {
+      shaderTime = 0;
+      const random = Math.random() * 2;
+      statue.material.uniforms.glitchIntensity.value = 1 + random;
+    }
+    if (statue.material.uniforms.glitchIntensity.value > 0 && shaderTime > 1) {
+      statue.material.uniforms.glitchIntensity.value = 0;
+    }
+    stats.update();
+
     composer.render(deltaTime);
   }
+
+  requestAnimationFrame(animate);
 }
 
 function startAnimating(fps: number) {
   fpsInterval = 1000 / fps;
   then = Date.now();
-  startTime = then;
   animate();
 }
 
