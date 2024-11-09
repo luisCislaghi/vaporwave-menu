@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "three": "^0.167.1",
+    "three-lens-distortion": "ycw/three-lens-distortion",
     "three-msdf-text-utils": "^1.1.7",
     "virtual-scroll": "^2.2.1"
   },
