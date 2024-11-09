@@ -8,6 +8,7 @@ import { doTextStuff } from "./text";
 import { badTvEffect } from "./badTv";
 import Stats from "three/addons/libs/stats.module.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import VirtualScroll from "virtual-scroll";
 
 const canvas = document.querySelector("#c") || undefined;
 const renderer = new THREE.WebGLRenderer({ antialias: false, canvas });
@@ -25,12 +26,14 @@ if (resizeRendererToDisplaySize(renderer)) {
 // renderer.toneMapping = THREE.ACESFilmicToneMapping; // teste
 // renderer.toneMappingExposure = 1.25; // teste
 document.body.appendChild(renderer.domElement);
-const stats = new Stats();
-document.body.appendChild(stats.dom);
+// const stats = new Stats();
+// document.body.appendChild(stats.dom);
 
 const scene = new THREE.Scene();
 
 let shaderTime = 0.0;
+let position = 0;
+let scrollSpeed = 0;
 
 const { badTVPass, filmPass, staticPass, composer } = badTvEffect(
   scene,
@@ -44,9 +47,6 @@ scene.add(light2);
 scene.add(ambientLight);
 
 // TEXTURE
-// const loader = new THREE.TextureLoader();
-// const spaceTexture = loader.load("./images/space.jpeg");
-// scene.background = spaceTexture;
 
 // OBJECTS
 // plane with gradient color background
@@ -62,7 +62,16 @@ const chess = drawChess();
 scene.add(chess);
 
 // text stuff
-doTextStuff(scene);
+const textGroup = await doTextStuff();
+scene.add(textGroup);
+
+const scoller = new VirtualScroll();
+
+scoller.on((e) => {
+  position = e.y / 100;
+  scrollSpeed = e.deltaY / 10;
+  textGroup.position.y = position;
+});
 
 // initialize the timer variables
 let [fpsInterval, now, then, elapsed]: number[] = [];
@@ -71,6 +80,7 @@ function animate() {
   // calc elapsed time since last loop
   now = Date.now();
   elapsed = now - then;
+  scrollSpeed *= 0.99;
 
   // if enough time has elapsed, draw the next frame
   if (elapsed > fpsInterval) {
@@ -94,7 +104,7 @@ function animate() {
     if (statue.material.uniforms.glitchIntensity.value > 0 && shaderTime > 1) {
       statue.material.uniforms.glitchIntensity.value = 0;
     }
-    stats.update();
+    // stats.update();
 
     composer.render(deltaTime);
   }

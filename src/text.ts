@@ -6,29 +6,30 @@ import {
   uniforms,
 } from "three-msdf-text-utils";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
-import VirtualScroll from "virtual-scroll";
 import textVertexShader from "./shaders/textVertex.glsl";
 import textFragmentShader from "./shaders/textFragment.glsl";
 
-const items = [
-  "Americano",
-  "Cappuccino",
-  "Espresso",
-  "Latte",
-  "Macchiato",
-  "Mocha",
-  "Flat White",
-];
+const menuItems: { [key: string]: string[] } = {
+  Hot: [
+    "Espresso",
+    "V60",
+    "Aeropress",
+    "Capuccino",
+    "Flat White",
+    "Caramel Latte",
+  ],
+  Cold: [
+    "Iced Americano",
+    "Iced Caramel Latte",
+    "Espresso Tonic",
+    "Espresso Tonic Orange",
+    "Affogato",
+  ],
+  "Non-Coffee": ["Matcha Latte"],
+};
 
-export async function doTextStuff(
-  scene: THREE.Scene
-  // renderer: THREE.WebGLRenderer,
-  // camera: THREE.PerspectiveCamera
-) {
+export async function doTextStuff() {
   const group = new THREE.Group();
-
-  scene.add(group);
-  let position = 0;
 
   const font = await new FontLoader().loadAsync(
     "fonts/DelaGothicOne-Regular-msdf.json"
@@ -61,32 +62,52 @@ export async function doTextStuff(
   });
   material.uniforms.uMap.value = atlas;
 
-  const scoller = new VirtualScroll();
+  const keys = Object.keys(menuItems);
+  let lastSubGroupPosition = 0;
+  keys.forEach((key, keyIndex) => {
+    const subGroup = new THREE.Group();
+    const titleScale = 0.02;
+    const itemScale = 0.01;
 
-  scoller.on((e) => {
-    const delta = e.deltaY;
-    position += delta * 0.1;
-    group.position.y = position;
-    console.log(position);
-  });
-
-  items.forEach((item, index) => {
-    const geometry = new MSDFTextGeometry({
-      text: item,
+    const title = new MSDFTextGeometry({
+      text: key,
       font: font.data,
       align: "right",
-      letterSpacing: 3,
+      letterSpacing: 10,
     });
-    console.log(geometry);
-    const mesh = new THREE.Mesh(geometry, material);
-    // mesh.position.z = 10;
 
-    mesh.position.y = 10 - index * 2;
-    mesh.position.z = 90;
+    const mesh = new THREE.Mesh(title, material);
+    mesh.position.y = -keyIndex * 2 + lastSubGroupPosition;
+    mesh.scale.set(titleScale, titleScale, titleScale);
     mesh.rotateX(Math.PI);
-    const scale = 0.02;
-    mesh.scale.set(scale, scale, scale);
 
-    group.add(mesh);
+    subGroup.add(mesh);
+
+    const itemsGroup = new THREE.Group();
+    menuItems[key].forEach((item, itemIndex) => {
+      const itemGeometry = new MSDFTextGeometry({
+        text: item,
+        font: font.data,
+        align: "right",
+        letterSpacing: 4,
+      });
+
+      const itemMesh = new THREE.Mesh(itemGeometry, material);
+      itemMesh.position.y = -itemIndex * 0.8 - 1 + lastSubGroupPosition;
+      itemMesh.scale.set(itemScale, itemScale, itemScale);
+      itemMesh.rotateX(Math.PI);
+
+      itemsGroup.add(itemMesh);
+    });
+
+    subGroup.add(itemsGroup);
+    // REVER ESSE MULTIPLICADOR PARA AJUSTAR A POSIÇÃO DOS ITENS
+    // É SÓ IR SOMANDO COMO BASE DAS POSIÇÕES
+    lastSubGroupPosition -= menuItems[key].length * 0.8;
+
+    group.add(subGroup);
+    group.position.z = 90;
   });
+
+  return group;
 }
