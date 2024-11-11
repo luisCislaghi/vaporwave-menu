@@ -1,32 +1,9 @@
 import * as THREE from "three";
 // @ts-ignore
-import {
-  MSDFTextGeometry,
-  // MSDFTextMaterial,
-  uniforms,
-} from "three-msdf-text-utils";
+import { MSDFTextGeometry } from "three-msdf-text-utils";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
-import textVertexShader from "./shaders/textVertex.glsl";
-import textFragmentShader from "./shaders/textFragment.glsl";
-
-const menuItems: { [key: string]: string[] } = {
-  Hot: [
-    "Espresso",
-    "V60",
-    "Aeropress",
-    "Capuccino",
-    "Flat White",
-    "Caramel Latte",
-  ],
-  Cold: [
-    "Iced Americano",
-    "Iced Caramel Latte",
-    "Espresso Tonic",
-    "Espresso Tonic Orange",
-    "Affogato",
-  ],
-  "Non-Coffee": ["Matcha Latte"],
-};
+import ITEMS from "./data";
+import material from "./material";
 
 export async function doTextStuff() {
   const group = new THREE.Group();
@@ -34,33 +11,6 @@ export async function doTextStuff() {
   const font = await new FontLoader().loadAsync(
     "fonts/DelaGothicOne-Regular-msdf.json"
   );
-  const atlas = await new THREE.TextureLoader().loadAsync(
-    "fonts/DelaGothicOne-Regular.png"
-  );
-
-  const material = new THREE.ShaderMaterial({
-    side: THREE.DoubleSide,
-    transparent: true,
-    defines: {
-      IS_SMALL: false,
-    },
-    extensions: {
-      // derivatives: true,
-    },
-    uniforms: {
-      // Common
-      ...uniforms.common,
-
-      // Rendering
-      ...uniforms.rendering,
-
-      // Strokes
-      ...uniforms.strokes,
-    },
-    vertexShader: textVertexShader,
-    fragmentShader: textFragmentShader,
-  });
-  material.uniforms.uMap.value = atlas;
 
   const getTitleMesh = (text: string) => {
     const scale = 0.02;
@@ -98,7 +48,7 @@ export async function doTextStuff() {
   const TITLE_MARGIN_BOTTOM = 1;
   let basePadding = 0;
 
-  Object.keys(menuItems).forEach((key, keyIndex) => {
+  Object.keys(ITEMS).forEach((key, keyIndex) => {
     if (keyIndex > 0) {
       basePadding += TITLE_MARGIN_TOP;
     }
@@ -112,7 +62,7 @@ export async function doTextStuff() {
     basePadding += TITLE_MARGIN_BOTTOM;
 
     const itemsGroup = new THREE.Group();
-    menuItems[key].forEach((item, itemIndex) => {
+    ITEMS[key].forEach((item, itemIndex) => {
       const itemMesh = getItemMesh(item);
       itemMesh.position.y = -basePadding;
       itemsGroup.add(itemMesh);

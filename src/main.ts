@@ -4,7 +4,7 @@ import { getCamera } from "./camera";
 import { drawPlane } from "./plane";
 import { drawStatue } from "./statue";
 import { drawChess } from "./chess";
-import { doTextStuff } from "./text";
+import { doTextStuff } from "./menu";
 import { badTvEffect } from "./badTv";
 import Stats from "three/addons/libs/stats.module.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
