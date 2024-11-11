@@ -10,14 +10,14 @@ import Stats from "three/addons/libs/stats.module.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import VirtualScroll from "virtual-scroll";
 
-const canvas = document.querySelector("#c") || undefined;
+let canvas = document.querySelector("#c") || undefined;
 const renderer = new THREE.WebGLRenderer({ antialias: false, canvas });
 // CAMERA
 const camera = getCamera(renderer);
-console.log(EffectComposer);
+
+canvas = renderer.domElement;
 
 if (resizeRendererToDisplaySize(renderer)) {
-  const canvas = renderer.domElement;
   camera.aspect = canvas.clientWidth / canvas.clientHeight;
   camera.updateProjectionMatrix();
 }
@@ -62,13 +62,13 @@ const chess = drawChess();
 scene.add(chess);
 
 // text stuff
-const textGroup = await doTextStuff();
+const textGroup = await doTextStuff(camera);
 scene.add(textGroup);
 
 const scoller = new VirtualScroll();
 
 scoller.on((e) => {
-  position = e.y / 100;
+  position = e.y / 500;
   scrollSpeed = e.deltaY / 10;
   textGroup.position.y = position;
 });

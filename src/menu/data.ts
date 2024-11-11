@@ -7,13 +7,7 @@ const data: { [key: string]: string[] } = {
     "Flat White",
     "Caramel Latte",
   ],
-  Cold: [
-    "Iced Americano",
-    "Iced Caramel Latte",
-    "Espresso Tonic",
-    "Espresso Tonic Orange",
-    "Affogato",
-  ],
+  Cold: ["Americano", "Caramel Latte", "Tonic", "Tonic Orange", "Affogato"],
   "Non-Coffee": ["Matcha Latte"],
 };
 
