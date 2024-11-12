@@ -68,9 +68,9 @@ scene.add(textGroup);
 const scoller = new VirtualScroll();
 
 scoller.on((e) => {
-  position = e.y / 500;
+  position = e.deltaY / 100;
   scrollSpeed = e.deltaY / 10;
-  textGroup.position.y = position;
+  textGroup.position.y += position;
 });
 
 // initialize the timer variables
