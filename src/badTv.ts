@@ -52,7 +52,7 @@ export function badTvEffect(
     show: true,
     distortion: 0.8,
     distortion2: 1.5,
-    speed: 0.07,
+    speed: 0.06,
     rollSpeed: 0.0,
   };
 
