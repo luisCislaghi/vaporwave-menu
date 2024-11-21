@@ -11,7 +11,9 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import VirtualScroll from "virtual-scroll";
 
 let canvas = document.querySelector("#c") || undefined;
-const renderer = new THREE.WebGLRenderer({ antialias: false, canvas });
+const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
+renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
+
 // CAMERA
 const camera = getCamera(renderer);
 
@@ -84,11 +86,11 @@ function animate() {
 
   // if enough time has elapsed, draw the next frame
   if (elapsed > fpsInterval) {
-    // Get ready for next frame by setting then=now, but also adjust for your
+    // get ready for next frame by setting then=now, but also adjust for your
     // specified fpsInterval not being a multiple of RAF's interval (16.7ms)
     then = now - (elapsed % fpsInterval);
 
-    // Put your drawing code here
+    // drawing code here
     const deltaTime = 0.1;
     shaderTime += deltaTime;
 
