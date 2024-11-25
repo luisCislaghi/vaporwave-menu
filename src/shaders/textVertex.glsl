@@ -1,4 +1,4 @@
-export default /* glsl */ `
+
 // Attribute
 attribute vec2 layoutUv;
 
@@ -56,4 +56,3 @@ void main() {
 
     vLetterIndex = letterIndex;
 }
-`;

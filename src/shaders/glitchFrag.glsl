@@ -1,5 +1,3 @@
-export default /* glsl */ `
-
 uniform sampler2D tDiffuse;
 uniform float glitchIntensity; // better between 1 and 2.5 or 3 max 
 varying vec2 vUv;
@@ -32,4 +30,3 @@ void main() {
 
     gl_FragColor = mixedG * mixedGCondition + greenG * greenGCondition + redG * redGCondition + noG * noGCondition;
 }
-`;

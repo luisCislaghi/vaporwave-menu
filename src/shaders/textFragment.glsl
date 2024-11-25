@@ -1,4 +1,3 @@
-export default /* glsl */ `
 // Varyings
 varying vec2 vUv;
 
@@ -86,4 +85,3 @@ void main() {
     // vec4 color = (filledFragColor) + (uStrokeColor * (outer_opacity - inner_opacity));
 
 }
-`;
