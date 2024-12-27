@@ -12,10 +12,10 @@ export function drawPlane(camera: THREE.PerspectiveCamera) {
   // Fragment Shader
   const fragmentShader = `
   varying vec2 vUv;
-  uniform vec3 color1;
-  uniform vec3 color2;
+  uniform vec3 topColor;
+  uniform vec3 bottomColor;
   void main() {
-    vec3 color = mix(color1, color2, vUv.y);
+    vec3 color = mix(bottomColor, topColor, vUv.y);
     gl_FragColor = vec4(color, 1.0);
   }
 `;
@@ -25,8 +25,8 @@ export function drawPlane(camera: THREE.PerspectiveCamera) {
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
     uniforms: {
-      color1: { value: new THREE.Color("hsl(326, 100%, 91%)") }, // pink
-      color2: { value: new THREE.Color("hsl(196, 100%, 84%)") }, // blue
+      topColor: { value: new THREE.Color("hsl(175, 23%, 29%)") },
+      bottomColor: { value: new THREE.Color("hsl(175, 22%, 45%)") },
     },
   });
   bgPlaneMaterial.side = THREE.DoubleSide;
@@ -34,10 +34,10 @@ export function drawPlane(camera: THREE.PerspectiveCamera) {
   let vect2 = new THREE.Vector2(0, 0);
   camera.getViewSize(100, vect2);
   const width = vect2.x;
-  const height = vect2.y;
+  const height = vect2.y - vect2.y / 3;
 
   const bgPlaneGeo = new THREE.PlaneGeometry(width, height);
   const bgPlaneMesh = new THREE.Mesh(bgPlaneGeo, bgPlaneMaterial);
-  // bgPlaneMesh.position.y = 32;
+  bgPlaneMesh.position.y = vect2.y / 3 / 2;
   return bgPlaneMesh;
 }
