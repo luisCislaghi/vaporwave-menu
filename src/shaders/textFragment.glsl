@@ -13,20 +13,10 @@ uniform vec3 uStrokeColor;
 uniform float uStrokeOutsetWidth;
 uniform float uStrokeInsetWidth;
 
-// uniform float pxRange; // set to distance field's pixel range
-uniform float uTextureDimentions;
-
-float pxRange = 2.;
 
 // Utils: Median
 float median(float r, float g, float b) {
     return max(min(r, g), min(max(r, g), b));
-}
-
-float screenPxRange(vec3 texture) {
-    vec2 unitRange = vec2(pxRange)/vec2(uTextureDimentions);
-    vec2 screenTexSize = vec2(1.0)/fwidth(vUv);
-    return max(0.5*dot(unitRange, screenTexSize), 1.0);
 }
 
 void main() {
@@ -49,22 +39,20 @@ void main() {
 
     // Strokes
     // Outset
-    float sigDistOutset = sigDist + uStrokeOutsetWidth * 0.5;
+    float sigDistOutset = sigDist + uStrokeOutsetWidth;
+    // float sigDistOutset = sigDist + uStrokeOutsetWidth * 0.5; // ORIGNAL WITH *0.5
 
     // Inset
-    float sigDistInset = sigDist - uStrokeInsetWidth * 0.5;
+    float sigDistInset = sigDist - uStrokeInsetWidth;
+    // float sigDistInset = sigDist - uStrokeInsetWidth * 0.5; // ORIGNAL WITH *0.5
 
     #ifdef IS_SMALL
-        float outset = smoothstep(uThreshold - afwidth, uThreshold + afwidth, sigDistOutset);
-        float inset = 1.0 - smoothstep(uThreshold - afwidth, uThreshold + afwidth, sigDistInset);
+        // float outset = smoothstep(uThreshold - afwidth, uThreshold + afwidth, sigDistOutset);
+        // float inset = 1.0 - smoothstep(uThreshold - afwidth, uThreshold + afwidth, sigDistInset);
     #else
-        float outset = clamp(sigDistOutset / fwidth(sigDistOutset) + 0.5, 0.0, 1.0);
         float inset = 1.0 - clamp(sigDistInset / fwidth(sigDistInset) + 0.5, 0.0, 1.0);
+        float outset = clamp(sigDistOutset / fwidth(sigDistOutset) + 0.5, 0.0, 1.0);
     #endif
-
-//teste
-    float screenPxDistance = screenPxRange(s)*(sigDist - 0.5);
-    float opacity = clamp(screenPxDistance + 0.5, 0.0, 1.0);
 
     // Border
     float border = outset * inset;

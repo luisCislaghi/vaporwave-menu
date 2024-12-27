@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { MSDFTextGeometry } from "three-msdf-text-utils";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import ITEMS from "./data";
-import material from "./material";
+import { bodyMaterial } from "./materials";
 
 export async function doTextStuff(camera: THREE.PerspectiveCamera) {
   const group = new THREE.Group();
@@ -23,7 +23,7 @@ export async function doTextStuff(camera: THREE.PerspectiveCamera) {
   const ITEM_SCALE = 0.012;
 
   const getMesh = (geometry: THREE.BufferGeometry, scale: number) => {
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = new THREE.Mesh(geometry, bodyMaterial);
     mesh.scale.set(scale, scale, scale);
     mesh.rotateX(Math.PI);
     return mesh;
