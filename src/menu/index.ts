@@ -7,11 +7,8 @@ import { bodyMaterial } from "./materials";
 
 export async function doTextStuff(camera: THREE.PerspectiveCamera) {
   const group = new THREE.Group();
-
-  const font = await new FontLoader().loadAsync(
-    // "fonts/roboto-regular.fnt"
-    "fonts/DelaGothicOne-Regular-msdf.json"
-  );
+  const groupZ = 95;
+  const font = await new FontLoader().loadAsync("fonts/Radwave-msdf.json");
 
   // TITLE
   const TITLE_MARGIN_TOP = 1.5;
@@ -34,7 +31,7 @@ export async function doTextStuff(camera: THREE.PerspectiveCamera) {
       text: text,
       font: font.data,
       align: "right",
-      letterSpacing: 4,
+      letterSpacing: 5,
     });
 
     return getMesh(itemGeometry, TITLE_SCALE);
@@ -45,7 +42,7 @@ export async function doTextStuff(camera: THREE.PerspectiveCamera) {
       text: text,
       font: font.data,
       align: "right",
-      letterSpacing: 10,
+      letterSpacing: -0,
     });
 
     return getMesh(itemGeometry, ITEM_SCALE);
@@ -56,10 +53,10 @@ export async function doTextStuff(camera: THREE.PerspectiveCamera) {
     var box = new THREE.Box3().setFromObject(mesh);
     const size = new THREE.Vector3();
     box.getSize(size);
-    mesh.position.x = -size.x;
+    mesh.position.x -= size.x;
   };
 
-  let basePadding = 0;
+  let basePadding = 3;
 
   Object.keys(ITEMS).forEach((key, keyIndex) => {
     if (keyIndex > 0) {
@@ -99,7 +96,7 @@ export async function doTextStuff(camera: THREE.PerspectiveCamera) {
 
   // get camera view size
   let vect2 = new THREE.Vector2(0, 0);
-  camera.getViewSize(5, vect2);
+  camera.getViewSize(100 - groupZ, vect2);
 
   const lensDistortionCorrection = 0.8;
   const diff = size.x < vect2.x ? size.x / vect2.x : vect2.x / size.x;
@@ -113,7 +110,7 @@ export async function doTextStuff(camera: THREE.PerspectiveCamera) {
   // align to the top and add a little offset to the top
   group.position.y = vect2.y / 2 - lensDistortionOffset * 2;
 
-  group.position.z = 95;
+  group.position.z = groupZ;
 
   return group;
 }

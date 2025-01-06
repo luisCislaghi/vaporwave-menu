@@ -1,3 +1,4 @@
+// コーヒー
 const data: { [key: string]: string[] } = {
   Hot: [
     "Espresso",
@@ -8,7 +9,7 @@ const data: { [key: string]: string[] } = {
     "Caramel Latte",
   ],
   Cold: ["Caramel Latte", "Americano", "Tonic", "Orange Tonic", "Affogato"],
-  "Non-Coffee": ["Matcha Latte", "Tea"],
+  Other: ["Matcha Latte", "Tea"],
 };
 
 export default data;

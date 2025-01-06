@@ -9,6 +9,7 @@ import { badTvEffect } from "./badTv";
 import Stats from "three/addons/libs/stats.module.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import VirtualScroll from "virtual-scroll";
+import { renderHeader } from "./header";
 
 let canvas = document.querySelector("#c") || undefined;
 const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
@@ -43,6 +44,10 @@ const { badTVPass, filmPass, staticPass, composer } = badTvEffect(
   renderer
 );
 
+// FOG
+const fogColor = new THREE.Color("hsl(175, 22%, 45%)");
+scene.fog = new THREE.Fog(fogColor, 20, 125);
+
 // LIGHTS
 scene.add(light1);
 scene.add(light2);
@@ -66,6 +71,10 @@ scene.add(chess);
 // text stuff
 const textGroup = await doTextStuff(camera);
 scene.add(textGroup);
+
+// header
+const headerGroup = await renderHeader(camera);
+scene.add(headerGroup);
 
 const scoller = new VirtualScroll();
 
