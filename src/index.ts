@@ -101,7 +101,7 @@ function startAnimating(fps: number) {
   animate();
 }
 
-startAnimating(24);
+startAnimating(24); // 24 fps for aesthetic reasons
 
 function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer) {
   const canvas = renderer.domElement;
