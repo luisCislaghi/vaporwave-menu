@@ -36,9 +36,9 @@ export function badTvEffect(
   const staticPass = new ShaderPass(staticShader);
   const copyPass = new ShaderPass(CopyShader);
   const lensDistortionPass = new LensDistortionPass({
-    distortion: new THREE.Vector2(0.01, 0.05), // radial distortion coeff
+    distortion: new THREE.Vector2(0.1, 0.1), // radial distortion coeff
     principalPoint: new THREE.Vector2(0, 0), // principal point coord
-    focalLength: new THREE.Vector2(0.9, 0.9), // focal length
+    focalLength: new THREE.Vector2(0.82, 0.82), // focal length
     skew: 0, // skew coeff
   });
 
@@ -48,22 +48,22 @@ export function badTvEffect(
   //Init DAT GUI control panel
   let badTVParams = {
     show: true,
-    distortion: 0.8,
+    distortion: 0.5,
     distortion2: 1.5,
-    speed: 0.06,
+    speed: 1,
     rollSpeed: 0.0,
   };
 
   let staticParams = {
     show: true,
-    amount: 0.05,
-    size: 2.0,
+    amount: 0.06,
+    size: 5.0,
   };
 
   let rgbParams = {
-    show: false,
-    amount: 0.005,
-    angle: 0.0,
+    show: true,
+    amount: 0.0015,
+    angle: -0.5,
   };
 
   let filmParams = {
