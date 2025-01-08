@@ -1,6 +1,9 @@
 import * as THREE from "three";
 
-export function drawPlane(camera: THREE.PerspectiveCamera) {
+export function drawBackground(
+  scene: THREE.Scene,
+  camera: THREE.PerspectiveCamera
+) {
   const vertexShader = `
   varying vec2 vUv;
   void main() {
@@ -9,7 +12,6 @@ export function drawPlane(camera: THREE.PerspectiveCamera) {
   }
 `;
 
-  // Fragment Shader
   const fragmentShader = `
   varying vec2 vUv;
   uniform vec3 topColor;
@@ -21,7 +23,7 @@ export function drawPlane(camera: THREE.PerspectiveCamera) {
 `;
 
   // Create ShaderMaterial with custom colors
-  const bgPlaneMaterial = new THREE.ShaderMaterial({
+  const material = new THREE.ShaderMaterial({
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
     uniforms: {
@@ -29,15 +31,17 @@ export function drawPlane(camera: THREE.PerspectiveCamera) {
       bottomColor: { value: new THREE.Color("hsl(175, 22%, 45%)") },
     },
   });
-  bgPlaneMaterial.side = THREE.DoubleSide;
+  material.side = THREE.DoubleSide;
 
   let vect2 = new THREE.Vector2(0, 0);
   camera.getViewSize(100, vect2);
   const width = vect2.x;
   const height = vect2.y - vect2.y / 3;
 
-  const bgPlaneGeo = new THREE.PlaneGeometry(width, height);
-  const bgPlaneMesh = new THREE.Mesh(bgPlaneGeo, bgPlaneMaterial);
-  bgPlaneMesh.position.y = vect2.y / 3 / 2;
-  return bgPlaneMesh;
+  const geometry = new THREE.PlaneGeometry(width, height);
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.y = vect2.y / 3 / 2;
+
+  scene.add(mesh);
+  return mesh;
 }

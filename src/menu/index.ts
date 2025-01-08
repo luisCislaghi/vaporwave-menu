@@ -5,7 +5,10 @@ import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import ITEMS from "./data";
 import { bodyMaterial } from "./materials";
 
-export async function doTextStuff(camera: THREE.PerspectiveCamera) {
+export async function drawMenu(
+  scene: THREE.Scene,
+  camera: THREE.PerspectiveCamera
+) {
   const group = new THREE.Group();
   const groupZ = 95;
   const font = await new FontLoader().loadAsync("fonts/Radwave-msdf.json");
@@ -112,5 +115,6 @@ export async function doTextStuff(camera: THREE.PerspectiveCamera) {
 
   group.position.z = groupZ;
 
+  scene.add(group);
   return group;
 }

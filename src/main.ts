@@ -1,15 +1,14 @@
 import * as THREE from "three";
-import { ambientLight, light1, light2 } from "./light";
+import { setUpLight } from "./light";
 import { getCamera } from "./camera";
-import { drawPlane } from "./plane";
+import { drawBackground } from "./plane";
 import { drawStatue } from "./statue";
-import { drawChess } from "./chess";
-import { doTextStuff } from "./menu";
+import { drawChessFloor } from "./chess";
+import { drawMenu } from "./menu";
 import { badTvEffect } from "./badTv";
-import Stats from "three/addons/libs/stats.module.js";
-import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import VirtualScroll from "virtual-scroll";
-import { renderHeader } from "./header";
+import { drawHeader } from "./header";
+import { setUpFog } from "./fog";
 
 let canvas = document.querySelector("#c") || undefined;
 const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
@@ -25,12 +24,7 @@ if (resizeRendererToDisplaySize(renderer)) {
   camera.updateProjectionMatrix();
 }
 
-// renderer.shadowMap.enabled = true;
-// renderer.toneMapping = THREE.ACESFilmicToneMapping; // teste
-// renderer.toneMappingExposure = 1.25; // teste
 document.body.appendChild(renderer.domElement);
-// const stats = new Stats();
-// document.body.appendChild(stats.dom);
 
 const scene = new THREE.Scene();
 
@@ -44,47 +38,26 @@ const { badTVPass, filmPass, staticPass, composer } = badTvEffect(
   renderer
 );
 
-// FOG
-const fogColor = new THREE.Color("hsl(175, 22%, 45%)");
-scene.fog = new THREE.Fog(fogColor, 20, 125);
-
-// LIGHTS
-scene.add(light1);
-scene.add(light2);
-scene.add(ambientLight);
-
-// TEXTURE
+// SETUP
+setUpFog(scene);
+setUpLight(scene);
 
 // OBJECTS
-// plane with gradient color background
-const bgPlaneMesh = drawPlane(camera);
-scene.add(bgPlaneMesh);
+drawBackground(scene, camera);
+drawChessFloor(scene);
+drawHeader(scene, camera);
+const statue = drawStatue(scene);
+const menu = await drawMenu(scene, camera);
 
-// statue image
-const statue = drawStatue();
-scene.add(statue);
-
-// chess image
-const chess = drawChess();
-scene.add(chess);
-
-// text stuff
-const textGroup = await doTextStuff(camera);
-scene.add(textGroup);
-
-// header
-const headerGroup = await renderHeader(camera);
-scene.add(headerGroup);
+// ANIMATION LOOP
 
 const scoller = new VirtualScroll();
-
 scoller.on((e) => {
   position = e.deltaY / 100;
   scrollSpeed = e.deltaY / 10;
-  textGroup.position.y += position;
+  menu.position.y += position;
 });
-
-// initialize the timer variables
+// timer variables
 let [fpsInterval, now, then, elapsed]: number[] = [];
 
 function animate() {
@@ -116,7 +89,6 @@ function animate() {
       statue.material.uniforms.glitchIntensity.value = 0;
     }
     // stats.update();
-
     composer.render(deltaTime);
   }
 

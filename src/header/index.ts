@@ -4,7 +4,10 @@ import { MSDFTextGeometry } from "three-msdf-text-utils";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { jpMaterial } from "./materials";
 
-export async function renderHeader(camera: THREE.PerspectiveCamera) {
+export async function drawHeader(
+  scene: THREE.Scene,
+  camera: THREE.PerspectiveCamera
+) {
   const group = new THREE.Group();
   const groupZ = 95;
   const font = await new FontLoader().loadAsync("fonts/MPLUS-medium-msdf.json");
@@ -69,5 +72,6 @@ export async function renderHeader(camera: THREE.PerspectiveCamera) {
 
   group.position.z = groupZ;
 
+  scene.add(group);
   return group;
 }

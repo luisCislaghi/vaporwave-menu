@@ -2,6 +2,10 @@ uniform sampler2D tDiffuse;
 uniform float glitchIntensity; // better between 1 and 2.5 or 3 max 
 varying vec2 vUv;
 
+uniform vec3 fogColor;
+uniform float fogNear;
+uniform float fogFar;
+
 void main() {
     vec2 uv = vUv;
     vec4 baseState = texture2D(tDiffuse, uv);    
@@ -29,4 +33,14 @@ void main() {
     vec4 noG = baseState;
 
     gl_FragColor = mixedG * mixedGCondition + greenG * greenGCondition + redG * redGCondition + noG * noGCondition;
+
+    #ifdef USE_FOG
+          #ifdef USE_LOGDEPTHBUF_EXT
+              float depth = gl_FragDepthEXT / gl_FragCoord.w;
+          #else
+              float depth = gl_FragCoord.z / gl_FragCoord.w;
+          #endif
+          float fogFactor = smoothstep( fogNear, fogFar, depth );
+          gl_FragColor.rgb = mix( gl_FragColor.rgb, fogColor, fogFactor );
+      #endif
 }

@@ -19,9 +19,6 @@ export function badTvEffect(
   camera: THREE.PerspectiveCamera,
   renderer: THREE.WebGLRenderer
 ) {
-  // console.log(badTVShader);
-  // console.log(staticShader);
-
   const LensDistortionPass = LensDistortionPassGen({
     THREE,
     Pass,
