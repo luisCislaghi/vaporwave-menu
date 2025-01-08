@@ -18,7 +18,7 @@ export async function drawHeader(
   // TITLE
   const TITLE_MARGIN_TOP = 1.5;
   const TITLE_MARGIN_BOTTOM = 1;
-  const TITLE_SCALE = 0.015;
+  const TITLE_SCALE = 0.017;
 
   const getMesh = (geometry: THREE.BufferGeometry, scale: number) => {
     const mesh = new THREE.Mesh(geometry, jpMaterial);
@@ -28,14 +28,14 @@ export async function drawHeader(
   };
 
   const getTextMesh = (text: string) => {
-    const itemGeometry = new MSDFTextGeometry({
+    const geometry = new MSDFTextGeometry({
       text: text,
       font: font.data,
       align: "right",
       letterSpacing: 5,
     });
 
-    return getMesh(itemGeometry, TITLE_SCALE);
+    return getMesh(geometry, TITLE_SCALE);
   };
 
   const alignToTheLeft = (mesh: THREE.Mesh) => {
@@ -43,12 +43,13 @@ export async function drawHeader(
     var box = new THREE.Box3().setFromObject(mesh);
     const size = new THREE.Vector3();
     box.getSize(size);
-    mesh.position.x -= size.x * 2;
+    mesh.position.x -= size.x;
   };
 
   const titleMesh = getTextMesh("コーヒー");
   alignToTheLeft(titleMesh);
   group.add(titleMesh);
+
   // a little gimmick to get group size
   var box = new THREE.Box3().setFromObject(group);
   const size = new THREE.Vector3();
@@ -63,9 +64,9 @@ export async function drawHeader(
   const scale = diff * lensDistortionCorrection;
   group.scale.set(scale, scale, scale);
 
-  // align to the left. add a little offset to the left
-  const lensDistortionOffset = 0.4;
-  group.position.x = vect2.x / 2 - lensDistortionOffset;
+  // align to the right. add a little offset to the right
+  const lensDistortionOffset = 0.45;
+  // group.position.x = vect2.x / 2 - lensDistortionOffset;
 
   // align to the top and add a little offset to the top
   group.position.y = vect2.y / 2 - lensDistortionOffset * 2;

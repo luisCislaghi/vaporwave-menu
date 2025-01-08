@@ -106,7 +106,7 @@ export async function drawMenu(
   const scale = diff * lensDistortionCorrection;
   group.scale.set(scale, scale, scale);
 
-  // align to the left. add a little offset to the left
+  // align to the right and add a little offset to the right
   const lensDistortionOffset = 0.45;
   group.position.x = vect2.x / 2 - lensDistortionOffset;
 
