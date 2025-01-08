@@ -9,56 +9,64 @@ import { badTvEffect } from "./badTv";
 import VirtualScroll from "virtual-scroll";
 import { drawHeader } from "./header";
 import { setUpFog } from "./fog";
+import { resizeRendererToDisplaySize } from "./util";
 
-let canvas = document.querySelector("#c") || undefined;
+//
+// CONSTANTS
+//
+const FPS = 1000 / 24; // 24 fps for aesthetic reasons
+
+//
+// SETUP
+//
+let canvas = document.querySelector("#c") as Element;
+const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
 renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
 
-// CAMERA
 const camera = getCamera(renderer);
-
-canvas = renderer.domElement;
 
 if (resizeRendererToDisplaySize(renderer)) {
   camera.aspect = canvas.clientWidth / canvas.clientHeight;
   camera.updateProjectionMatrix();
 }
 
-document.body.appendChild(renderer.domElement);
-
-const scene = new THREE.Scene();
-
-let shaderTime = 0.0;
-let position = 0;
-let scrollSpeed = 0;
-
-const { badTVPass, filmPass, staticPass, composer } = badTvEffect(
-  scene,
-  camera,
-  renderer
-);
-
-// SETUP
 setUpFog(scene);
 setUpLight(scene);
 
+//
 // OBJECTS
+//
 drawBackground(scene, camera);
 drawChessFloor(scene);
 drawHeader(scene, camera);
 const statue = drawStatue(scene);
 const menu = await drawMenu(scene, camera);
 
-// ANIMATION LOOP
+//
+// ANIMATION
+//
 
+// badTV shaders
+const { badTVPass, filmPass, staticPass, composer } = badTvEffect(
+  scene,
+  camera,
+  renderer
+);
+
+// scroller setup
+let position = 0;
+let scrollSpeed = 0;
 const scoller = new VirtualScroll();
 scoller.on((e) => {
   position = e.deltaY / 100;
   scrollSpeed = e.deltaY / 10;
   menu.position.y += position;
 });
+
 // timer variables
-let [fpsInterval, now, then, elapsed]: number[] = [];
+let [elapsed, now, then] = [0, 0, Date.now()];
+let shaderTime = 0.0;
 
 function animate() {
   // calc elapsed time since last loop
@@ -67,12 +75,12 @@ function animate() {
   scrollSpeed *= 0.99;
 
   // if enough time has elapsed, draw the next frame
-  if (elapsed > fpsInterval) {
+  if (elapsed > FPS) {
     // get ready for next frame by setting then=now, but also adjust for your
-    // specified fpsInterval not being a multiple of RAF's interval (16.7ms)
-    then = now - (elapsed % fpsInterval);
+    // specified FPS not being a multiple of RAF's interval (16.7ms or 60fps)
+    then = now - (elapsed % FPS);
 
-    // drawing code here
+    // update objects
     const deltaTime = 0.1;
     shaderTime += deltaTime;
 
@@ -88,28 +96,11 @@ function animate() {
     if (statue.material.uniforms.glitchIntensity.value > 0 && shaderTime > 1) {
       statue.material.uniforms.glitchIntensity.value = 0;
     }
-    // stats.update();
+
     composer.render(deltaTime);
   }
 
   requestAnimationFrame(animate);
 }
 
-function startAnimating(fps: number) {
-  fpsInterval = 1000 / fps;
-  then = Date.now();
-  animate();
-}
-
-startAnimating(24); // 24 fps for aesthetic reasons
-
-function resizeRendererToDisplaySize(renderer: THREE.WebGLRenderer) {
-  const canvas = renderer.domElement;
-  const width = canvas.clientWidth;
-  const height = canvas.clientHeight;
-  const needResize = canvas.width !== width || canvas.height !== height;
-  if (needResize) {
-    renderer.setSize(width, height, false);
-  }
-  return needResize;
-}
+animate();

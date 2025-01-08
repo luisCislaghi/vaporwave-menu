@@ -1,18 +1,19 @@
 import * as THREE from "three";
 import badTVShader from "./shaders/tv/badTVShader";
 import staticShader from "./shaders/tv/staticShader";
-
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { Pass, FullScreenQuad } from "three/addons/postprocessing/Pass.js";
-import { MaskPass } from "three/addons/postprocessing/MaskPass.js";
 import { CopyShader } from "three/addons/shaders/CopyShader.js";
 import { FilmShader } from "three/addons/shaders/FilmShader.js";
 import { RGBShiftShader } from "three/addons/shaders/RGBShiftShader.js";
+// @ts-ignore
 import { LensDistortionPassGen } from "three-lens-distortion";
 
-//  https://github.com/felixturner/bad-tv-shader/blob/master/example/index.html
+// Shaders from https://github.com/felixturner/bad-tv-shader/blob/master/example/index.html
+// I did not used all of them, but they are here for reference
+// also, it's precoded to support dat.gui
 
 export function badTvEffect(
   scene: THREE.Scene,
@@ -27,7 +28,7 @@ export function badTvEffect(
 
   let composer = new EffectComposer(renderer);
 
-  //Create Shader Passes
+  // Create Shader Passes
   const renderPass = new RenderPass(scene, camera);
   const badTVPass = new ShaderPass(badTVShader);
   const rgbPass = new ShaderPass(RGBShiftShader);
@@ -115,7 +116,6 @@ export function badTvEffect(
   }
 
   onParamsChange();
-  // console.log(composer);
 
   return { badTVPass, filmPass, staticPass, composer };
 }
