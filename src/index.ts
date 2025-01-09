@@ -55,13 +55,13 @@ const { badTVPass, filmPass, staticPass, composer } = badTvEffect(
 );
 
 // scroller setup
-let position = 0;
+let scrollDeltaY = 0;
 let scrollSpeed = 0;
 const scoller = new VirtualScroll();
 scoller.on((e) => {
-  position = e.deltaY / 100;
+  scrollDeltaY = e.deltaY / 100;
   scrollSpeed = e.deltaY / 10;
-  menu.position.y += position;
+  menu.position.y += scrollDeltaY;
 });
 
 // timer variables
@@ -81,7 +81,7 @@ function animate() {
     then = now - (elapsed % FPS);
 
     // update objects
-    const deltaTime = 0.1;
+    const deltaTime = 0.15;
     shaderTime += deltaTime;
 
     badTVPass.uniforms["time"].value = shaderTime;
