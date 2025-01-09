@@ -3,7 +3,7 @@ import * as THREE from "three";
 import { MSDFTextGeometry } from "three-msdf-text-utils";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import ITEMS from "./data";
-import { bodyMaterial } from "./materials";
+import { titleMaterial } from "./materials";
 
 export async function drawMenu(
   scene: THREE.Scene,
@@ -14,16 +14,20 @@ export async function drawMenu(
   const font = await new FontLoader().loadAsync("fonts/Radwave-msdf.json");
 
   // TITLE
-  const TITLE_MARGIN_TOP = 1.5;
+  const TITLE_MARGIN_TOP = 1.3;
   const TITLE_MARGIN_BOTTOM = 1;
   const TITLE_SCALE = 0.02;
 
   // ITEM
-  const ITEM_MARGIN_BOTTOM = 0.6;
+  const ITEM_MARGIN_BOTTOM = 0.5;
   const ITEM_SCALE = 0.012;
 
-  const getMesh = (geometry: THREE.BufferGeometry, scale: number) => {
-    const mesh = new THREE.Mesh(geometry, bodyMaterial);
+  const getMesh = (
+    geometry: THREE.BufferGeometry,
+    scale: number,
+    material: THREE.ShaderMaterial
+  ) => {
+    const mesh = new THREE.Mesh(geometry, material);
     mesh.scale.set(scale, scale, scale);
     mesh.rotateX(Math.PI);
     return mesh;
@@ -34,10 +38,10 @@ export async function drawMenu(
       text: text,
       font: font.data,
       align: "right",
-      letterSpacing: 5,
+      letterSpacing: 2,
     });
 
-    return getMesh(itemGeometry, TITLE_SCALE);
+    return getMesh(itemGeometry, TITLE_SCALE, titleMaterial);
   };
 
   const getItemMesh = (text: string) => {
@@ -45,10 +49,10 @@ export async function drawMenu(
       text: text,
       font: font.data,
       align: "right",
-      letterSpacing: -0,
+      letterSpacing: 1,
     });
 
-    return getMesh(itemGeometry, ITEM_SCALE);
+    return getMesh(itemGeometry, ITEM_SCALE, titleMaterial);
   };
 
   const alignToTheRight = (mesh: THREE.Mesh) => {

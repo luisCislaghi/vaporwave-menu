@@ -1,15 +1,15 @@
 // コーヒー
 const data: { [key: string]: string[] } = {
-  Hot: [
+  hot: [
     "Espresso",
     "V60",
     "Aeropress",
     "Capuccino",
-    "Flat White",
-    "Caramel Latte",
+    "Flat  White",
+    "Caramel  Latte",
   ],
-  Cold: ["Caramel Latte", "Americano", "Tonic", "Orange Tonic", "Affogato"],
-  Other: ["Matcha Latte", "Tea"],
+  cold: ["Caramel  Latte", "Americano", "Tonic", "Orange  Tonic", "Affogato"],
+  Other: ["Matcha  Latte", "Tea"],
 };
 
 export default data;
