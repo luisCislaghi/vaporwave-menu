@@ -56,7 +56,7 @@ export async function drawMenu(
   };
 
   const alignToTheRight = (mesh: THREE.Mesh) => {
-    var box = new THREE.Box3().setFromObject(mesh);
+    let box = new THREE.Box3().setFromObject(mesh);
     const size = new THREE.Vector3();
     box.getSize(size);
     mesh.position.x -= size.x;
@@ -96,7 +96,7 @@ export async function drawMenu(
   });
 
   // a little gimmick to get group size
-  var box = new THREE.Box3().setFromObject(group);
+  let box = new THREE.Box3().setFromObject(group);
   const size = new THREE.Vector3();
   box.getSize(size);
 

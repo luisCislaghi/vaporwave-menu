@@ -7,7 +7,7 @@ import { drawChessFloor } from "./chess";
 import { drawMenu } from "./menu";
 import { badTvEffect } from "./badTv";
 import VirtualScroll from "virtual-scroll";
-import { drawHeader } from "./header";
+import { drawHeader, MeshType } from "./header";
 import { setUpFog } from "./fog";
 import { resizeRendererToDisplaySize } from "./util";
 
@@ -39,9 +39,12 @@ setUpLight(scene);
 //
 drawBackground(scene, camera);
 drawChessFloor(scene);
-drawHeader(scene, camera);
 const statue = drawStatue(scene);
+const header = await drawHeader(scene, camera);
 const menu = await drawMenu(scene, camera);
+let box = new THREE.Box3().setFromObject(menu);
+const menuSize = new THREE.Vector3();
+box.getSize(menuSize);
 
 //
 // ANIMATION
@@ -56,12 +59,38 @@ const { badTVPass, filmPass, staticPass, composer } = badTvEffect(
 
 // scroller setup
 let scrollDeltaY = 0;
-let scrollSpeed = 0;
+let scrollDiffFromStart = 0;
+const startPosition = menu.position.y;
+const initScale = header.scale.x;
+const initPosition = header.position.x;
 const scoller = new VirtualScroll();
 scoller.on((e) => {
-  scrollDeltaY = e.deltaY / 100;
-  scrollSpeed = e.deltaY / 10;
-  menu.position.y += scrollDeltaY;
+  scrollDeltaY =
+    "wheelDelta" in e.originalEvent ? e.deltaY / 150 : e.deltaY / 240;
+  let newPosition = menu.position.y + scrollDeltaY * -1;
+  if (
+    newPosition >= startPosition &&
+    newPosition <= startPosition + menuSize.y
+  ) {
+    menu.position.y = newPosition;
+    scrollDiffFromStart = menu.position.y - startPosition;
+    let normalizedDiff =
+      scrollDiffFromStart > 1
+        ? 1
+        : scrollDiffFromStart < 0.1
+        ? 0
+        : scrollDiffFromStart;
+    let scale = initScale - normalizedDiff * initScale * 0.05;
+    console.log(initPosition);
+    header.scale.set(scale, scale, scale);
+    header.position.x = initPosition + normalizedDiff * 0.08;
+    header.rotation.x = normalizedDiff * -0.05 * Math.PI;
+    header.children.forEach((e) => {
+      (e as unknown as MeshType).material.uniforms["uOpacity"] = {
+        value: 1 - normalizedDiff,
+      };
+    });
+  }
 });
 
 // timer variables
@@ -72,7 +101,6 @@ function animate() {
   // calc elapsed time since last loop
   now = Date.now();
   elapsed = now - then;
-  scrollSpeed *= 0.99;
 
   // if enough time has elapsed, draw the next frame
   if (elapsed > FPS) {

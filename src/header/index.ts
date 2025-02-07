@@ -4,6 +4,12 @@ import { MSDFTextGeometry } from "three-msdf-text-utils";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { radwaveMaterial, mplusMaterial } from "./materials";
 
+export type MeshType = THREE.Mesh<
+  THREE.BufferGeometry<THREE.NormalBufferAttributes>,
+  THREE.ShaderMaterial,
+  THREE.Object3DEventMap
+>;
+
 export async function drawHeader(
   scene: THREE.Scene,
   camera: THREE.PerspectiveCamera
@@ -62,7 +68,7 @@ export async function drawHeader(
   group.add(latinMesh);
 
   // a little gimmick to get group size
-  var box = new THREE.Box3().setFromObject(group);
+  let box = new THREE.Box3().setFromObject(group);
   const size = new THREE.Vector3();
   box.getSize(size);
 
