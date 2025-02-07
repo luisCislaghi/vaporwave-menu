@@ -17,10 +17,10 @@ const defaultUnfiforms = {
   ...uniforms.strokes,
   // Custom
   uMap: { value: atlas },
-  uColor: { value: new THREE.Color("#ffffff") },
-  uStrokeColor: { value: new THREE.Color("#ffffff") },
-  uStrokeOutsetWidth: { value: 0.2 },
-  uStrokeInsetWidth: { value: 0.0 },
+  uColor: { value: new THREE.Color("#ef4bae") },
+  uStrokeColor: { value: new THREE.Color("#f06488") },
+  uStrokeOutsetWidth: { value: 0.1 },
+  uStrokeInsetWidth: { value: 0.1 },
 };
 
 const materialConfig = {

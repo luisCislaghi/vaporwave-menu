@@ -25,10 +25,10 @@ const defaultUnfiforms = {
   ...uniforms.strokes,
   // Custom
   uMap: { value: atlasRadwave },
-  uColor: { value: new THREE.Color("#b3e6e1") },
-  uStrokeColor: { value: new THREE.Color("#b3e6e1") },
+  uColor: { value: new THREE.Color("#ef4bae") },
+  uStrokeColor: { value: new THREE.Color("#fff") },
   uStrokeOutsetWidth: { value: 0.2 },
-  uStrokeInsetWidth: { value: 0.0 },
+  uStrokeInsetWidth: { value: 0.2 },
   // uOpacity: { value: 0.1 },
 };
 

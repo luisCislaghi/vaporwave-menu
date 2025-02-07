@@ -62,8 +62,8 @@ export function badTvEffect(
 
   let rgbParams = {
     show: true,
-    amount: 0.0015,
-    angle: -0.5,
+    amount: 0.003,
+    angle: 1,
   };
 
   let filmParams = {

@@ -56,7 +56,6 @@ export async function drawMenu(
   };
 
   const alignToTheRight = (mesh: THREE.Mesh) => {
-    // align to the right
     var box = new THREE.Box3().setFromObject(mesh);
     const size = new THREE.Vector3();
     box.getSize(size);

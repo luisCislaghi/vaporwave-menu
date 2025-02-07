@@ -33,7 +33,7 @@ export function drawStatue(scene: THREE.Scene) {
 
   const mesh = new THREE.Mesh(geometry, material);
   mesh.position.z = 45;
-  mesh.position.x = -10;
+  mesh.position.x = -9;
 
   scene.add(mesh);
   return mesh;

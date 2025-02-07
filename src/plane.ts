@@ -27,8 +27,8 @@ export function drawBackground(
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
     uniforms: {
-      topColor: { value: new THREE.Color("hsl(175, 23%, 29%)") },
-      bottomColor: { value: new THREE.Color("hsl(175, 22%, 45%)") },
+      topColor: { value: new THREE.Color("hsl(320, 98%, 19%)") },
+      bottomColor: { value: new THREE.Color("hsl(291, 97%, 22%)") },
     },
   });
   material.side = THREE.DoubleSide;
