@@ -16,4 +16,5 @@ export default {
       fileRegex: /\.md$/,
     }),
   ],
+  base: "/vaporwave-menu/",
 };
