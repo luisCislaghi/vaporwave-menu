@@ -85,7 +85,11 @@ export async function drawHeader(
 
   // align to the left and add a little offset to the left
   const lensDistortionOffset = window.isMobile ? 0.6 : 2;
-  group.position.x -= size.x - lensDistortionOffset;
+  if (window.isMobile) {
+    group.position.x -= size.x / 2 - lensDistortionOffset;
+  } else {
+    group.position.x -= size.x - lensDistortionOffset;
+  }
   // group.position.x -= vect2.x / 2 - lensDistortionOffset;
 
   // align to the top and add a little offset to the top
