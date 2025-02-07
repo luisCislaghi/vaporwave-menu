@@ -9,7 +9,13 @@ import { BAD_TV_DEFAULT_PARAMS, badTvEffect } from "./badTv";
 import VirtualScroll from "virtual-scroll";
 import { drawHeader, MeshType } from "./header";
 import { setUpFog } from "./fog";
-import { resizeRendererToDisplaySize } from "./util";
+import { handleCanvasResize, resizeRendererToDisplaySize } from "./util";
+
+declare global {
+  interface Window {
+    isMobile: boolean;
+  }
+}
 
 //
 // CONSTANTS
@@ -26,10 +32,10 @@ renderer.setPixelRatio(Math.min(2, window.devicePixelRatio));
 
 const camera = getCamera(renderer);
 
-if (resizeRendererToDisplaySize(renderer)) {
-  camera.aspect = canvas.clientWidth / canvas.clientHeight;
-  camera.updateProjectionMatrix();
-}
+handleCanvasResize(renderer, camera);
+window.addEventListener("resize", () => {
+  handleCanvasResize(renderer, camera);
+});
 
 setUpFog(scene);
 setUpLight(scene);

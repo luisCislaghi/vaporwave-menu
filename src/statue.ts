@@ -32,8 +32,8 @@ export function drawStatue(scene: THREE.Scene) {
   const geometry = new THREE.PlaneGeometry(40, 40, 64, 64);
 
   const mesh = new THREE.Mesh(geometry, material);
-  mesh.position.z = 45;
-  mesh.position.x = -9;
+  mesh.position.z = window.isMobile ? 45 : 65;
+  mesh.position.x = window.isMobile ? -9 : 0;
 
   scene.add(mesh);
   return mesh;

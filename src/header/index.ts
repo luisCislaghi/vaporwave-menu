@@ -3,6 +3,7 @@ import * as THREE from "three";
 import { MSDFTextGeometry } from "three-msdf-text-utils";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { radwaveMaterial, mplusMaterial } from "./materials";
+import { CAMERA_DISTANCE } from "../camera";
 
 export type MeshType = THREE.Mesh<
   THREE.BufferGeometry<THREE.NormalBufferAttributes>,
@@ -24,8 +25,8 @@ export async function drawHeader(
   );
 
   // TITLE
-  const JP_SCALE = 0.017;
-  const LATIM_SCALE = 0.012;
+  const JP_SCALE = window.isMobile ? 0.017 : 0.04;
+  const LATIM_SCALE = window.isMobile ? 0.012 : 0.03;
 
   const getTextMesh = (
     geometry: THREE.BufferGeometry,
@@ -62,9 +63,10 @@ export async function drawHeader(
 
   const jpMesh = getJPTextMesh("コーヒー");
   group.add(jpMesh);
+
   const latinMesh = getLatinTextMesh("COFFEE");
   latinMesh.position.x += 0.1;
-  latinMesh.position.y -= 0.6;
+  latinMesh.position.y -= window.isMobile ? 0.6 : 1.6;
   group.add(latinMesh);
 
   // a little gimmick to get group size
@@ -74,7 +76,7 @@ export async function drawHeader(
 
   // get camera view size
   let vect2 = new THREE.Vector2(0, 0);
-  camera.getViewSize(100 - groupZ, vect2);
+  camera.getViewSize(CAMERA_DISTANCE - groupZ, vect2);
 
   const lensDistortionCorrection = 0.8;
   const diff = size.x < vect2.x ? size.x / vect2.x : vect2.x / size.x;
@@ -82,12 +84,15 @@ export async function drawHeader(
   group.scale.set(scale, scale, scale);
 
   // align to the left and add a little offset to the left
-  const lensDistortionOffset = 0.6;
-  group.position.x -= size.x / 2 - lensDistortionOffset;
+  const lensDistortionOffset = window.isMobile ? 0.6 : 2;
+  group.position.x -= size.x - lensDistortionOffset;
   // group.position.x -= vect2.x / 2 - lensDistortionOffset;
 
   // align to the top and add a little offset to the top
-  group.position.y = vect2.y / 2 - lensDistortionOffset * 2;
+  const lensDistortionOffsetTop = window.isMobile
+    ? lensDistortionOffset * 2
+    : lensDistortionOffset - 0.5;
+  group.position.y = vect2.y / 2 - lensDistortionOffsetTop;
 
   group.position.z = groupZ;
 

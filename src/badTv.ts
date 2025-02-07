@@ -17,8 +17,8 @@ import { LensDistortionPassGen } from "three-lens-distortion";
 
 const BAD_TV_DEFAULT_PARAMS = {
   show: true,
-  distortion: 0.5,
-  distortion2: 1.5,
+  distortion: window.isMobile ? 0.5 : 0.3,
+  distortion2: window.isMobile ? 1.5 : 1,
   speed: 1,
   rollSpeed: 0.0,
 };

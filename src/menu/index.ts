@@ -4,6 +4,7 @@ import { MSDFTextGeometry } from "three-msdf-text-utils";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import ITEMS from "./data";
 import { titleMaterial } from "./materials";
+import { CAMERA_DISTANCE } from "../camera";
 
 export async function drawMenu(
   scene: THREE.Scene,
@@ -102,19 +103,22 @@ export async function drawMenu(
 
   // get camera view size
   let vect2 = new THREE.Vector2(0, 0);
-  camera.getViewSize(100 - groupZ, vect2);
+  camera.getViewSize(CAMERA_DISTANCE - groupZ, vect2);
 
-  const lensDistortionCorrection = 0.8;
+  const lensDistortionCorrection = window.isMobile ? 0.8 : 1.4;
   const diff = size.x < vect2.x ? size.x / vect2.x : vect2.x / size.x;
   const scale = diff * lensDistortionCorrection;
   group.scale.set(scale, scale, scale);
 
   // align to the right and add a little offset to the right
-  const lensDistortionOffset = 0.45;
+  const lensDistortionOffset = window.isMobile ? 0.45 : 1.6;
   group.position.x = vect2.x / 2 - lensDistortionOffset;
 
   // align to the top and add a little offset to the top
-  group.position.y = vect2.y / 2 - lensDistortionOffset * 2;
+  const lensDistortionOffsetTop = window.isMobile
+    ? lensDistortionOffset * 2
+    : lensDistortionOffset * -0.4;
+  group.position.y = vect2.y / 2 - lensDistortionOffsetTop;
 
   group.position.z = groupZ;
 

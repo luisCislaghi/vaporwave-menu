@@ -19,16 +19,16 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    /* Add type for three addons */
-    // nao funciona
-    "paths": {
-      "three/addons/controls/*": [
-        "node_modules/@types/three/examples/jsm/controls/*",
-        "node_modules/@types/three/examples/jsm/loaders/*",
-        "node_modules/@types/three/examples/jsm/shaders/*",
-        "node_modules/@types/three/examples/jsm/addons/*"
-      ]
-    },
+    // /* Add type for three addons */
+    // // nao funciona
+    // "paths": {
+    //   "three/addons/controls/*": [
+    //     "node_modules/@types/three/examples/jsm/controls/*",
+    //     "node_modules/@types/three/examples/jsm/loaders/*",
+    //     "node_modules/@types/three/examples/jsm/shaders/*",
+    //     "node_modules/@types/three/examples/jsm/addons/*"
+    //   ]
+    // },
     "baseUrl": "./"
   },
   "include": ["src"]

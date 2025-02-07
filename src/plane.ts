@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { CAMERA_DISTANCE } from "./camera";
 
 export function drawBackground(
   scene: THREE.Scene,
@@ -34,7 +35,7 @@ export function drawBackground(
   material.side = THREE.DoubleSide;
 
   let vect2 = new THREE.Vector2(0, 0);
-  camera.getViewSize(100, vect2);
+  camera.getViewSize(CAMERA_DISTANCE, vect2);
   const width = vect2.x;
   const height = vect2.y - vect2.y / 3;
 
