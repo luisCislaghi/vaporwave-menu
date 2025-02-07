@@ -15,6 +15,15 @@ import { LensDistortionPassGen } from "three-lens-distortion";
 // I did not used all of them, but they are here for reference
 // also, it's precoded to support dat.gui
 
+const BAD_TV_DEFAULT_PARAMS = {
+  show: true,
+  distortion: 0.5,
+  distortion2: 1.5,
+  speed: 1,
+  rollSpeed: 0.0,
+};
+export { BAD_TV_DEFAULT_PARAMS };
+
 export function badTvEffect(
   scene: THREE.Scene,
   camera: THREE.PerspectiveCamera,
@@ -46,13 +55,7 @@ export function badTvEffect(
   filmPass.uniforms.grayscale.value = 0;
 
   //Init DAT GUI control panel
-  let badTVParams = {
-    show: true,
-    distortion: 0.5,
-    distortion2: 1.5,
-    speed: 1,
-    rollSpeed: 0.0,
-  };
+  let badTVParams = BAD_TV_DEFAULT_PARAMS;
 
   let staticParams = {
     show: true,

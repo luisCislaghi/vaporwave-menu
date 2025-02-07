@@ -5,7 +5,7 @@ import { drawBackground } from "./plane";
 import { drawStatue } from "./statue";
 import { drawChessFloor } from "./chess";
 import { drawMenu } from "./menu";
-import { badTvEffect } from "./badTv";
+import { BAD_TV_DEFAULT_PARAMS, badTvEffect } from "./badTv";
 import VirtualScroll from "virtual-scroll";
 import { drawHeader, MeshType } from "./header";
 import { setUpFog } from "./fog";
@@ -59,30 +59,44 @@ const { badTVPass, filmPass, staticPass, composer } = badTvEffect(
 
 // scroller setup
 let scrollDeltaY = 0;
+let scrollSpeed = 0;
 let scrollDiffFromStart = 0;
 const startPosition = menu.position.y;
 const initScale = header.scale.x;
+const initScaleStatue = statue.scale.x;
 const initPosition = header.position.x;
 const scoller = new VirtualScroll();
 scoller.on((e) => {
-  scrollDeltaY =
-    "wheelDelta" in e.originalEvent ? e.deltaY / 150 : e.deltaY / 240;
+  if ("wheelDelta" in e.originalEvent) {
+    scrollSpeed = e.deltaY / 20;
+    scrollDeltaY = e.deltaY / 150;
+  } else {
+    scrollSpeed = e.deltaY / 8;
+    scrollDeltaY = e.deltaY / 240;
+  }
+
   let newPosition = menu.position.y + scrollDeltaY * -1;
   if (
     newPosition >= startPosition &&
     newPosition <= startPosition + menuSize.y
   ) {
+    // roll menu
     menu.position.y = newPosition;
+
+    // scroll effects
     scrollDiffFromStart = menu.position.y - startPosition;
-    let normalizedDiff =
+    const normalizedDiff =
       scrollDiffFromStart > 1
         ? 1
         : scrollDiffFromStart < 0.1
         ? 0
         : scrollDiffFromStart;
-    let scale = initScale - normalizedDiff * initScale * 0.05;
-    console.log(initPosition);
-    header.scale.set(scale, scale, scale);
+
+    const headerScale = initScale - normalizedDiff * initScale * 0.05;
+    const statueScale =
+      initScaleStatue - normalizedDiff * initScaleStatue * -0.02;
+    statue.scale.set(statueScale, statueScale, statueScale);
+    header.scale.set(headerScale, headerScale, headerScale);
     header.position.x = initPosition + normalizedDiff * 0.08;
     header.rotation.x = normalizedDiff * -0.05 * Math.PI;
     header.children.forEach((e) => {
@@ -101,6 +115,8 @@ function animate() {
   // calc elapsed time since last loop
   now = Date.now();
   elapsed = now - then;
+  if (scrollSpeed < 0.01 && scrollSpeed > -0.01) scrollSpeed = 0;
+  else scrollSpeed *= 0.98;
 
   // if enough time has elapsed, draw the next frame
   if (elapsed > FPS) {
@@ -112,6 +128,10 @@ function animate() {
     const deltaTime = 0.15;
     shaderTime += deltaTime;
 
+    badTVPass.uniforms["distortion"].value =
+      BAD_TV_DEFAULT_PARAMS.distortion + scrollSpeed;
+    badTVPass.uniforms["distortion2"].value =
+      BAD_TV_DEFAULT_PARAMS.distortion2 + scrollSpeed;
     badTVPass.uniforms["time"].value = shaderTime;
     filmPass.uniforms["time"].value = shaderTime;
     staticPass.uniforms["time"].value = shaderTime;
