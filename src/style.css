@@ -22,9 +22,18 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
-
+  min-height: -webkit-fill-available;
   /* new */
+  position: fixed;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
   overscroll-behavior: none;
+}
+
+html {
+  width: 100%;
+  height: -webkit-fill-available;
+  overflow: hidden;
 }
 
 #c {

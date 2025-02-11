@@ -17,12 +17,20 @@ import { LensDistortionPassGen } from "three-lens-distortion";
 
 const BAD_TV_DEFAULT_PARAMS = {
   show: true,
-  distortion: window.isMobile ? 0.5 : 0.3,
-  distortion2: window.isMobile ? 1.5 : 1,
+  distortion: 0.3,
+  distortion2: 1,
   speed: 1,
   rollSpeed: 0.0,
 };
-export { BAD_TV_DEFAULT_PARAMS };
+const BAD_TV_DEFAULT_PARAMS_MOBILE = {
+  show: true,
+  distortion: 0.8,
+  distortion2: 2.4,
+  speed: 1,
+  rollSpeed: 0.0,
+};
+
+export { BAD_TV_DEFAULT_PARAMS, BAD_TV_DEFAULT_PARAMS_MOBILE };
 
 export function badTvEffect(
   scene: THREE.Scene,
@@ -55,7 +63,9 @@ export function badTvEffect(
   filmPass.uniforms.grayscale.value = 0;
 
   //Init DAT GUI control panel
-  let badTVParams = BAD_TV_DEFAULT_PARAMS;
+  let badTVParams = window.isMobile
+    ? BAD_TV_DEFAULT_PARAMS_MOBILE
+    : BAD_TV_DEFAULT_PARAMS;
 
   let staticParams = {
     show: true,
@@ -65,7 +75,7 @@ export function badTvEffect(
 
   let rgbParams = {
     show: true,
-    amount: 0.003,
+    amount: window.isMobile ? 0.003 : 0.002,
     angle: 1,
   };
 
