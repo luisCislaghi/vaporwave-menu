@@ -1,8 +1,8 @@
-# INTRO
+### Cafe Menu - Vaporwave Aesthetic
 
 Hi! I do love coffee and I also have my home cafe ☕. I have created this menu to share with my friends and family. I hope you enjoy it as much as I do.
 
-# EXPERIENCE
+## Experience
 
 I have created this menu inspired by the vaporwave aesthetic and it's meant to be an experience. It's better viewed on a mobile device, as it was inteded for.
 
@@ -13,18 +13,23 @@ My favorites are:
 AND
 [Windows96 - Caligula](https://youtu.be/q7v9zazGZ9Q?si=ACpi8MRkeKQWJ6am)
 
-# DEMO
+## Demo
+
 [Click here to see the demo](https://luiscislaghi.github.io/vaporwave-menu/)
 
 ### Try opening with your phone 😉
 
 ![QRCode--vaporwavemenu](https://github.com/user-attachments/assets/1266bad1-e470-4175-b407-98df9caa31b2)
 
+## Preview
 
-# PREVIEW
 If you cannot try the demo 😁
+
 <details>
   <summary><b>Click to expand and show the preview</b> (<i>spoiler</i>)</summary>
   <img src="https://github.com/user-attachments/assets/a26357e3-da97-4cf9-80fc-35016d846c98">
 </details>
 
+## Licence
+
+MIT © [Luis Cislaghi](https://www.linkedin.com/in/luiscislaghi/)
