@@ -9,7 +9,7 @@ export function drawChessFloor(scene: THREE.Scene) {
   texture.magFilter = THREE.NearestFilter;
   texture.colorSpace = THREE.SRGBColorSpace;
 
-  const repeatCount = PLANE_SIZE / 30;
+  const repeatCount = PLANE_SIZE / 7;
   texture.repeat.set(repeatCount, repeatCount);
 
   const material = new THREE.MeshPhongMaterial({
