@@ -5,12 +5,23 @@
     <link rel="icon" type="image/png" href="images/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vaporwave Menu</title>
-    <script type="module" crossorigin src="/vaporwave-menu/assets/index-BdCi7tew.js"></script>
-    <link rel="stylesheet" crossorigin href="/vaporwave-menu/assets/index-C3kwS8NH.css">
+    <script type="module" crossorigin src="/vaporwave-menu/assets/index-BtGbgtZf.js"></script>
+    <link rel="stylesheet" crossorigin href="/vaporwave-menu/assets/index-BgtHCDi-.css">
   </head>
   <body>
     <div id="app">
+      <div id="preloader">
+        <div class="loader"></div>
+      </div>
       <canvas id="c"></canvas>
     </div>
+    <script>
+      window.addEventListener("load", function () {
+        const preloader = document.getElementById("preloader");
+        if (preloader) {
+          preloader.style.display = "none";
+        }
+      });
+    </script>
   </body>
 </html>
