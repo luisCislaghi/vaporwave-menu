@@ -8,19 +8,23 @@ I have created this menu inspired by the vaporwave aesthetic and it's meant to b
 
 ### You can enjoy it with music too 🎵
 
-I do recommend my favorites:
+My favorites are:
 [Windows96 - Rituals](https://youtu.be/kSo6LT0xPSQ?si=au8V4FK_ISkDeF3u)
-OR
+AND
 [Windows96 - Caligula](https://youtu.be/q7v9zazGZ9Q?si=ACpi8MRkeKQWJ6am)
 
 # DEMO
-
-add link
+[Click here to see the demo](https://luiscislaghi.github.io/vaporwave-menu/)
 
 ### Try opening with your phone 😉
 
-add qr code
+![QRCode--vaporwavemenu](https://github.com/user-attachments/assets/1266bad1-e470-4175-b407-98df9caa31b2)
 
-# WIP
 
-This is a work in progress. I am still working on details and responsiveness.
+# PREVIEW
+If you cannot try the demo 😁
+<details>
+  <summary><b>Click to expand and show the preview</b> (<i>spoiler</i>)</summary>
+  <img src="https://github.com/user-attachments/assets/a26357e3-da97-4cf9-80fc-35016d846c98">
+</details>
+
